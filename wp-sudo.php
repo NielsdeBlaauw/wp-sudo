@@ -11,7 +11,27 @@ add_action('admin_notices', function(){
 });
 
 function check_admin_users_public(){
-    warn_admin_users_public();
+    $admin_user_ids = get_users(array(
+        'role'=>'administrator',
+        'fields'=>'ids'
+    )); 
+    $public_post_type_slugs = array_merge(
+        get_post_types(array(
+            'public'=>true,
+            '_builtin'=>true
+        )),
+        get_post_types(array(
+            'public'=>true,
+            '_builtin'=>false
+        ))
+    );
+    if(get_posts(array(
+      'post_type' => $public_post_type_slugs,
+      'author__in' => $admin_user_ids,
+      'post_status' => 'publish'
+    ))){
+        warn_admin_users_public();
+    }
 }
 
 function warn_admin_users_public(){
