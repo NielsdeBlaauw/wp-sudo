@@ -43,7 +43,7 @@ function warn_admin_users_public(){
 }
 
 function check_admin_default_username(){
-    if(get_user_by('slug', 'admin')){
+    if(get_user_by('login', 'admin')){
         warn_admin_default_username();
     }
 }
